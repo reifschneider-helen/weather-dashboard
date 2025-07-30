@@ -20,7 +20,7 @@ export default function WeatherWidget(props: {
       </div>
 
       <p>{props.temperature}°C</p>
-      <p>{props.humidity}</p>
+      <p>{props.humidity}%</p>
     </div>
   );
 }
