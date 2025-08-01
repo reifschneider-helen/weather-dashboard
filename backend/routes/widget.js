@@ -5,7 +5,7 @@ const {
   deleteWidget,
 } = require("../controllers/widgetController");
 
-const router = express.Router;
+const router = express.Router();
 
 router.post("/", createWidget);
 router.get("/", getWidgets);
