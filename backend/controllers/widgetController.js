@@ -2,6 +2,11 @@ const Widget = require("../models/Widget");
 
 const createWidget = async (req, res) => {
   const { location } = req.body;
+  if (!location || typeof location !== "string" || location.trim() === "") {
+    return res
+      .status(400)
+      .json({ error: "Location is required an must be a non-empty string" });
+  }
 
   try {
     const newWidget = await Widget.create({ location });
@@ -21,10 +26,10 @@ const getWidgets = async (req, res) => {
 };
 
 const deleteWidget = async (req, res) => {
-  const id = req.param.id;
+  const id = req.params.id;
 
   try {
-    await Widget.findByIdAndDelete({ id });
+    await Widget.findByIdAndDelete(id);
     res.status(204).json({ message: "Widget deleted" });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete widget" });
