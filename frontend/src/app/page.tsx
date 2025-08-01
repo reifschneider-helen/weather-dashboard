@@ -1,13 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
 import SearchBar from "@/components/SearchBar";
-import { useState } from "react";
+import { createWidget } from "@/services/widgetApi";
 
 export default function Home() {
   const [cities, setCities] = useState<string[]>([]);
   const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
+
+  // interface Widget {
+
+  // }
 
   async function fetchWeather(city: string) {
     console.log(apiPort);
@@ -16,13 +21,17 @@ export default function Home() {
   }
 
   const handleSearch = async (city: string): Promise<void> => {
-    const cityLower = city.toLowerCase();
-    const citiesLower = cities.map((c) => c.toLowerCase());
-    if (!citiesLower.includes(cityLower)) {
-      const res = await fetchWeather(city);
-      console.log(res);
-      setCities([...cities, city]);
-    }
+    // const cityLower = city.toLowerCase();
+    // const citiesLower = cities.map((c) => c.toLowerCase());
+    // if (!citiesLower.includes(cityLower)) {
+    //   const res = await fetchWeather(city);
+    //   console.log(res);
+    //   setCities([...cities, city]);
+    // }
+    try {
+      const widget = await createWidget(city);
+      console.log("widget created");
+    } catch (error) {}
   };
 
   const handleDelete = (id: string) => {

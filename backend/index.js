@@ -11,9 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-beforeAll(async () => {
-  await connectDB();
-});
+connectDB();
 
 app.use("/weather", weatherRoutes);
 app.use("/widget", widgetRoutes);
