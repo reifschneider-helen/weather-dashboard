@@ -16,13 +16,20 @@ afterAll(async () => {
 
 describe("Widget API", () => {
   describe("POST /widget", () => {
-    it("should create a new widget", async () => {
+    it("should create a new widget and return data with weather", async () => {
       const res = await request(app)
         .post("/widget")
         .send({ location: "Berlin" });
 
       expect(res.statusCode).toBe(201);
-      expect(res.body).toHaveProperty("location", "Berlin");
+      expect(res.body).toHaveProperty(
+        "location",
+        "Berlin",
+        "createdAt",
+        "weather"
+      );
+      expect(res.body.weather).toHaveProperty("temperature");
+      expect(typeof res.body.weather.temperature).toBe("number");
     });
 
     it("should return 400 if location is missing", async () => {
@@ -41,7 +48,7 @@ describe("Widget API", () => {
   });
 
   describe("GET /widget", () => {
-    it("should get all widgets", async () => {
+    it("should get all widgets with weather", async () => {
       const res = await request(app).get("/widget");
 
       expect(res.statusCode).toBe(200);

@@ -1,5 +1,16 @@
+const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
+
+export async function getWidgets() {
+  const response = await fetch(`http://localhost:${apiPort}/widget`);
+
+  if (!response.ok) {
+    throw new Error("Failed to get widgets");
+  }
+
+  return await response.json();
+}
+
 export async function createWidget(location: string) {
-  const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
   const response = await fetch(`http://localhost:${apiPort}/widget`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -11,4 +22,14 @@ export async function createWidget(location: string) {
   }
 
   return await response.json();
+}
+
+export async function deleteWidget(id: string) {
+  const response = await fetch(`http://localhost:${apiPort}/widget/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete widget");
+  }
 }

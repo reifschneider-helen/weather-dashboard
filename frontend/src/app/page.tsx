@@ -1,41 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
 import SearchBar from "@/components/SearchBar";
-import { createWidget } from "@/services/widgetApi";
+import { getWidgets, createWidget, deleteWidget } from "@/services/widgetApi";
+import WidgetInterface from "@/models/widget.model";
 
 export default function Home() {
-  const [cities, setCities] = useState<string[]>([]);
-  const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
-
-  // interface Widget {
-
-  // }
-
-  async function fetchWeather(city: string) {
-    console.log(apiPort);
-    const response = await fetch(`http://localhost:${apiPort}/weather/${city}`);
-    return await response.json();
-  }
+  const [widgets, setWidgets] = useState<WidgetInterface[]>([]);
+  useEffect(() => {
+    async function fetchWidgets() {
+      const result = await getWidgets();
+      setWidgets(result);
+    }
+    try {
+      fetchWidgets();
+    } catch (error) {
+      console.error("Failed to get widgets: ", error);
+    }
+  }, []);
 
   const handleSearch = async (city: string): Promise<void> => {
-    // const cityLower = city.toLowerCase();
-    // const citiesLower = cities.map((c) => c.toLowerCase());
-    // if (!citiesLower.includes(cityLower)) {
-    //   const res = await fetchWeather(city);
-    //   console.log(res);
-    //   setCities([...cities, city]);
-    // }
     try {
-      const widget = await createWidget(city);
-      console.log("widget created");
-    } catch (error) {}
+      const result = await createWidget(city);
+      setWidgets((prev) => [...prev, result]);
+      console.log(result, "widget created");
+    } catch (error) {
+      console.error("Failed to create widget: ", error);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setCities(cities.filter((c) => c !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteWidget(id);
+      setWidgets((prev) => prev.filter((widget) => widget.id !== id));
+    } catch (error) {
+      console.error("Failed to delete widget: ", error);
+    }
   };
 
   return (
@@ -45,23 +47,13 @@ export default function Home() {
       </header>
       <main className="flex flex-col flex-1 gap-[32px] row-start-2 items-center sm:items-start">
         <SearchBar onSearch={handleSearch} />
-        {cities.map((city: string) => (
+        {widgets.map((widget: WidgetInterface) => (
           <WeatherWidget
-            key={city}
-            id={city}
-            city={city}
-            temperature={20}
-            humidity={50}
+            key={widget.id}
+            widget={widget}
             onDelete={handleDelete}
           />
         ))}
-        <WeatherWidget
-          id="Berlin"
-          city="Berlin"
-          temperature={20}
-          humidity={50}
-          onDelete={handleDelete}
-        />
       </main>
       <footer></footer>
     </div>
