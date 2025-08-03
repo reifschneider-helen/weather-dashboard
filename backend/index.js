@@ -2,8 +2,8 @@ const dotenv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./db");
-const weatherRoutes = require("./routes/weather");
 const widgetRoutes = require("./routes/widget");
+const geocodingRoutes = require("./routes/geocoding");
 
 dotenv.config();
 
@@ -13,16 +13,18 @@ app.use(express.json());
 
 connectDB();
 
-app.use("/weather", weatherRoutes);
 app.use("/widget", widgetRoutes);
+app.use("/geocoding", geocodingRoutes)
 
 app.get("/", (req, res) => {
   res.send("Backend is started!");
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log("Server is running on port " + PORT);
-});
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log("Server is running on port " + PORT);
+  });
+}
 
 module.exports = app;

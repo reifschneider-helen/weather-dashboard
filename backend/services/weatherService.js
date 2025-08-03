@@ -1,39 +1,13 @@
-async function fetchWeatherData(city) {
-  try {
-    const geoRes = await fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=10&language=de&format=json`
-    );
-    const geoData = await geoRes.json();
-    if (!geoData.results || geoData.results.length === 0) {
-      throw new Error("No geocoding results found.");
-    }
-    const firstResult = geoData.results[0];
-    return { latitude: firstResult.latitude, longitude: firstResult.longitude };
-  } catch (error) {
-    console.error("Error fetching geocoding data:", error);
-    return null;
-  }
-}
-
-/**
- * Fetches the current weather forecast for a given city using the Open-Meteo API.
- * @param {string} city - The name of the city to fetch weather data for.
- * @returns {Promise<Object|null>} An object containing temperature, humidity, wind speed, rain, and snowfall, or null if an error occurs.
- */
-
-async function fetchWeatherForecast(city) {
-  const location = await fetchWeatherData(city);
+async function fetchWeatherForecast({ name, latitude, longitude }) {
   if (
-    !location ||
-    typeof location.latitude === "undefined" ||
-    typeof location.longitude === "undefined"
+    !name ||
+    typeof name !== "string" ||
+    typeof latitude !== "number" ||
+    typeof longitude !== "number"
   ) {
-    console.error(
-      "Failed to get valid latitude and longitude from geocoding API."
-    );
+    console.error("Invalid parameters for fetchWeatherForecast");
     return null;
   }
-  const { latitude, longitude } = location;
 
   try {
     const weatherRes = await fetch(
@@ -48,6 +22,7 @@ async function fetchWeatherForecast(city) {
     }
 
     return {
+      location: name,
       temperature: weatherData.current.temperature_2m,
       humidity: weatherData.current.relative_humidity_2m,
       windSpeed: weatherData.current.wind_speed_10m,

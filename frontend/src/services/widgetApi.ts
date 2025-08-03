@@ -1,3 +1,5 @@
+import Location from "@/models/location.model";
+
 const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
 
 export async function getWidgets() {
@@ -10,7 +12,7 @@ export async function getWidgets() {
   return await response.json();
 }
 
-export async function createWidget(location: string) {
+export async function createWidget(location: Location) {
   const response = await fetch(`http://localhost:${apiPort}/widget`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

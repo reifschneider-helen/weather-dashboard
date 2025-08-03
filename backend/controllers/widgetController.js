@@ -10,7 +10,15 @@ function cleanWidget(widget) {
 
 const createWidget = async (req, res) => {
   const { location } = req.body;
-  if (!location || typeof location !== "string" || location.trim() === "") {
+
+  if (
+    !location ||
+    typeof location !== "object" ||
+    !location.name ||
+    typeof location.name !== "string" ||
+    typeof location.latitude !== "number" ||
+    typeof location.longitude !== "number"
+  ) {
     return res
       .status(400)
       .json({ error: "Location is required an must be a non-empty string" });
@@ -18,7 +26,14 @@ const createWidget = async (req, res) => {
 
   try {
     const newWidget = await Widget.create({ location });
-    const weatherDaten = await fetchWeatherForecast(location);
+
+    const weatherDaten = await fetchWeatherForecast({
+      name: location.name,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      country: location.country,
+      region: location.region,
+    });
     const widgetObj = cleanWidget(newWidget);
     const fullWeatherDaten = { ...widgetObj, weather: weatherDaten };
 
@@ -33,7 +48,12 @@ const getWidgets = async (req, res) => {
     const widgets = await Widget.find().sort({ createdAt: -1 });
     const fullWeatherDaten = await Promise.all(
       widgets.map(async (widget) => {
-        const weatherDaten = await fetchWeatherForecast(widget.location);
+        const { name, latitude, longitude } = widget.location;
+        const weatherDaten = await fetchWeatherForecast({
+          name,
+          latitude,
+          longitude,
+        });
         const widgetObj = cleanWidget(widget);
         return {
           ...widgetObj,
@@ -52,7 +72,7 @@ const deleteWidget = async (req, res) => {
 
   try {
     await Widget.findByIdAndDelete(id);
-    res.status(204).json({ message: "Widget deleted" });
+    res.status(204).end();
   } catch (error) {
     res.status(500).json({ error: "Failed to delete widget" });
   }

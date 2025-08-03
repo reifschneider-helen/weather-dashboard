@@ -12,12 +12,16 @@ export default function WeatherWidget(props: {
       <div className="flex items-center">
         <div className="flex items-center">
           <LocationIcon className="w-6 h-6 mr-2" />
-          <p className="mr-4 text-xl">{widget.location}</p>
+          <p className="mr-4 text-xl">
+            {widget.location.name}
+            {widget.location.region && `, ${widget.location.region}`}
+            {widget.location.country}
+          </p>
         </div>
 
         <button
           className="hover:bg-blue-200/20 p-2 rounded-full"
-          onClick={() => props.onDelete(widget.id)}
+          onClick={() => onDelete(widget.id)}
         >
           <CloseIcon alt="Close" className="w-4 h-4" />
         </button>

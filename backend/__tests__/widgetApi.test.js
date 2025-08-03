@@ -61,7 +61,7 @@ describe("Widget API", () => {
       const createRes = await request(app)
         .post("/widget")
         .send({ location: "Teststadt" });
-      const id = createRes.body._id;
+      const id = createRes.body.id;
       const deleteRes = await request(app).delete(`/widget/${id}`);
 
       expect(deleteRes.statusCode).toBe(204);
