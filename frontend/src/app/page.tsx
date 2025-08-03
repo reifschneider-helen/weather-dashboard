@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
 import SearchBar from "@/components/SearchBar";
+import CityDropdown from "@/components/CityDropdown";
 import { getWidgets, createWidget, deleteWidget } from "@/services/widgetApi";
 import { getCitySuggestions } from "@/services/geocodingApi";
 import WidgetInterface from "@/models/widget.model";
@@ -79,28 +80,22 @@ export default function Home() {
         <Heading title="Wetter Dashboard" />
       </header>
       <main className="flex flex-col flex-1 gap-[32px] row-start-2 items-center sm:items-start">
-        <SearchBar onSearch={handleSearch} />
-        {citySuggestions.length > 0 && (
-          <ul className="bg-white rounded shadow p-2 mt-2 w-full max-w-md">
-            {citySuggestions.map((city) => (
-              <li key={city.name + city.latitude + city.longitude}>
-                <button
-                  className="w-full text-left p-2 hover:bg-blue-100"
-                  onClick={() => handleSelectCity(city)}
-                >
-                  {city.name}, {city.region}, {city.country}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        {widgets.map((widget: WidgetInterface) => (
-          <WeatherWidget
-            key={widget.id}
-            widget={widget}
-            onDelete={handleDelete}
+        <div className="relative w-96 mx-auto">
+          <SearchBar onSearch={handleSearch} />
+          <CityDropdown
+            suggestions={citySuggestions}
+            onSelect={handleSelectCity}
           />
-        ))}
+        </div>
+        <div className="flex flex-wrap gap-4 justify-center w-full">
+          {widgets.map((widget: WidgetInterface) => (
+            <WeatherWidget
+              key={widget.id}
+              widget={widget}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
       </main>
       <footer></footer>
     </div>

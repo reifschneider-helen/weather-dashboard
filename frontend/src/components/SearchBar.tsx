@@ -3,24 +3,26 @@
 import { useState } from "react";
 
 export default function SearchBar(props: { onSearch: (city: string) => void }) {
+  const { onSearch } = props;
+
   const [inputValue, setInputValue] = useState("");
 
   const handleClick = () => {
     if (inputValue.trim() !== "") {
-      props.onSearch(inputValue);
+      onSearch(inputValue);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (inputValue.trim() !== "" && e.key === "Enter") {
-      props.onSearch(inputValue);
+      onSearch(inputValue);
     }
   };
 
   return (
-    <div className="bg-gray-100 shadow-md rounded-lg flex items-center gap-2">
+    <div className="bg-gray-100 shadow-md rounded-lg flex items-center gap-2 w-full">
       <input
-        className="outline-none min-w-md px-4 py-3 rounded-lg"
+        className="outline-none w-full px-4 py-3 rounded-lg"
         placeholder="Type to search..."
         type="text"
         value={inputValue}
