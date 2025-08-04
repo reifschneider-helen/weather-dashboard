@@ -1,40 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
-export default function SearchBar(props: { onSearch: (city: string) => void }) {
-  const { onSearch } = props;
+export default function SearchBar(props: {
+  value: string;
+  setValue: (value: SetStateAction<string>) => void;
+  onInput: (query: string) => void;
+  onFocus: (query: string) => void;
+  onEnter: () => void;
+}) {
+  const { value, setValue, onInput, onFocus, onEnter } = props;
 
-  const [inputValue, setInputValue] = useState("");
+  // const [inputValue, setInputValue] = useState("");
 
-  const handleClick = () => {
-    if (inputValue.trim() !== "") {
-      onSearch(inputValue);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    onInput(e.target.value);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (inputValue.trim() !== "" && e.key === "Enter") {
-      onSearch(inputValue);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      onEnter();
     }
   };
 
   return (
-    <div className="bg-gray-100 shadow-md rounded-lg flex items-center gap-2 w-full">
-      <input
-        className="outline-none w-full px-4 py-3 rounded-lg"
-        placeholder="Type to search..."
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      <button
-        className="hover:bg-blue-200 px-4 py-3 rounded-lg"
-        onClick={handleClick}
-      >
-        Search
-      </button>
-    </div>
+    <input
+      className="bg-gray-100 shadow-md outline-none w-full px-4 py-3 rounded-lg"
+      placeholder="Ort eingeben..."
+      type="text"
+      value={value}
+      onFocus={() => onFocus(value)}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+    />
   );
 }

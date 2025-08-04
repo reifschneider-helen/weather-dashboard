@@ -21,14 +21,16 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
       return null;
     }
 
-    return {
+    const formattedWeatherData = {
       location: name,
-      temperature: weatherData.current.temperature_2m,
+      temperature: Math.round(weatherData.current.temperature_2m),
       humidity: weatherData.current.relative_humidity_2m,
       windSpeed: weatherData.current.wind_speed_10m,
       rain: weatherData.current.rain,
       snowfall: weatherData.current.snowfall,
     };
+
+    return formattedWeatherData;
   } catch (error) {
     console.error("Error fetching weather data:", error);
     return null;
