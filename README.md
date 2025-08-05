@@ -115,7 +115,7 @@ weather-dashboard/
    **Example `.env`:**
 
    ```
-   PORT=5000
+   NEXT_PUBLIC_API_PORT=5050
    ```
 
 ---
