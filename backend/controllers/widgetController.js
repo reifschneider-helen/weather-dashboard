@@ -1,6 +1,10 @@
 const Widget = require("../models/Widget");
 const fetchWeatherForecast = require("../services/weatherService");
 
+/**
+ * Converts a widget document to a plain object for API responses,
+ * replacing _id with id for frontend compatibility.
+ */
 function cleanWidget(widget) {
   const obj = widget.toObject();
   obj.id = obj._id;
@@ -8,6 +12,9 @@ function cleanWidget(widget) {
   return obj;
 }
 
+/**
+ * Creates a new widget and returns it with weather data.
+ */
 const createWidget = async (req, res) => {
   const { location } = req.body;
 
@@ -26,7 +33,6 @@ const createWidget = async (req, res) => {
 
   try {
     const newWidget = await Widget.create({ location });
-
     const weatherDaten = await fetchWeatherForecast({
       name: location.name,
       latitude: location.latitude,
@@ -43,6 +49,9 @@ const createWidget = async (req, res) => {
   }
 };
 
+/**
+ * Returns all widgets with weather data.
+ */
 const getWidgets = async (req, res) => {
   try {
     const widgets = await Widget.find().sort({ createdAt: -1 });
@@ -67,6 +76,9 @@ const getWidgets = async (req, res) => {
   }
 };
 
+/**
+ * Deletes a widget by id.
+ */
 const deleteWidget = async (req, res) => {
   const id = req.params.id;
 

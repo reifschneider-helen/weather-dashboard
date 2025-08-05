@@ -1,9 +1,13 @@
 const fetchGeocodingData = require("../services/geocodingService");
 
+/**
+ * Returns city suggestions for autocomplete based on the city name.
+ */
 const getCitySuggestions = async (req, res) => {
   const { city } = req.params;
   try {
     const results = await fetchGeocodingData(city);
+
     if (!results || results.length === 0) {
       return res.status(404).json({ error: "No cities found" });
     }

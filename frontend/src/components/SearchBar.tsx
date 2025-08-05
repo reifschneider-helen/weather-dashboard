@@ -24,7 +24,7 @@ export default function SearchBar(props: {
 
   return (
     <input
-      className="bg-gray-100 dark:bg-gray-800 text-black dark:text-gray-100 shadow-md outline-none w-full px-4 py-3 rounded-lg"
+      className="bg-white dark:bg-gray-800 text-black dark:text-gray-100 shadow-md outline-none w-full px-4 py-3 rounded-lg"
       placeholder="Ort eingeben..."
       type="text"
       value={value}

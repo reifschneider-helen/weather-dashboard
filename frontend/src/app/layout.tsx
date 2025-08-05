@@ -16,6 +16,16 @@ export const metadata: Metadata = {
   title: "Weather Dashboard",
   description:
     "A modern weather dashboard application built with Next.js, TypeScript, and Tailwind CSS.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", type: "image/x-icon" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({
@@ -25,27 +35,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
+        className={`${geistSans?.variable ?? ""} ${
+          geistMono?.variable ?? ""
+        } antialiased min-h-screen`}
       >
         {children}
       </body>

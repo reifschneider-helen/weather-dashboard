@@ -1,7 +1,9 @@
 const cache = {};
-// const FIVE_MINUTES = 5 * 60 * 1000;
-const FIVE_MINUTES = 60 * 1000; //to delete
+const FIVE_MINUTES = 5 * 60 * 1000;
 
+/**
+ * Fetches weather data for given name and coordinates (with caching).
+ */
 async function fetchWeatherForecast({ name, latitude, longitude }) {
   if (
     !name ||
@@ -15,14 +17,21 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
 
   try {
     const key = `${latitude},${longitude}`;
+
     if (cache[key] && Date.now() - cache[key].timestamp < FIVE_MINUTES) {
-      console.log("cache");
       return cache[key].data;
     }
 
     const weatherRes = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain,snowfall`
     );
+
+    if (!weatherRes.ok) {
+      console.error(
+        `Weather API request failed with status ${weatherRes.status}: ${weatherRes.statusText}`
+      );
+      return null;
+    }
 
     const weatherData = await weatherRes.json();
 
@@ -33,7 +42,10 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
 
     const formattedWeatherData = {
       location: name,
-      temperature: Math.round(weatherData.current.temperature_2m),
+      temperature:
+        typeof weatherData.current.temperature_2m === "number"
+          ? Math.round(weatherData.current.temperature_2m)
+          : null,
       humidity: weatherData.current.relative_humidity_2m,
       windSpeed: weatherData.current.wind_speed_10m,
       rain: weatherData.current.rain,
@@ -44,7 +56,7 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
       data: formattedWeatherData,
       timestamp: Date.now(),
     };
-    console.log("new data");
+
     return formattedWeatherData;
   } catch (error) {
     console.error("Error fetching weather data:", error);
