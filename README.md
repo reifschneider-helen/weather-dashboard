@@ -2,6 +2,7 @@
 
 A fullstack application to display current weather for multiple cities. Users can search for cities, create widgets, update or delete them. The project uses **Next.js (frontend)**, **Node.js + Express (backend)**, **MongoDB**, and an external weather API (open-meteo.com). Includes caching and dynamic UI updates.
 
+---
 
 ## 🚀 Features
 
@@ -14,14 +15,16 @@ A fullstack application to display current weather for multiple cities. Users ca
 - Backend unit tests with Jest
 - Responsive design with Tailwind CSS
 
+---
 
 ## 🧰 Technologies
 
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS
 - **Backend:** Node.js, Express, MongoDB, Mongoose
 - **APIs:** Open-Meteo (weather & geocoding)
-- **Testing:** Jest, Supertest                |
+- **Testing:** Jest, Supertest
 
+---
 
 ## 📁 Project Structure
 
@@ -36,11 +39,10 @@ weather-dashboard/
 │   ├── db.js
 │   ├── index.js
 │   └── .env
-|
 ├── frontend/
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── page.tsx/
+│   │   │   └── page.tsx/
 │   │   ├── components/
 │   │   ├── icons/
 │   │   ├── models/
@@ -50,8 +52,7 @@ weather-dashboard/
 └── README.md
 ```
 
-
-
+---
 
 ## ⚙️ Getting Started
 
@@ -61,16 +62,17 @@ weather-dashboard/
 - MongoDB (locally or via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
 - NPM or Yarn
 
-
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/reifschneider-helen/weather-dashboard.git
    cd weather-dashboard
    ```
 
 2. **Install dependencies:**
+
    ```bash
    cd backend
    npm install
@@ -79,41 +81,49 @@ weather-dashboard/
    ```
 
 3. **Configure environment variables for the backend:**
+
    ```bash
-   #Copy `.env.example` to `.env` and `.env.test.example` to `.env.test` in `backend`
+   # Copy `.env.example` to `.env` and `.env.test.example` to `.env.test` in `backend`
    cd backend
    cp .env.example .env
-   # Update MONGODB_URI and PORT in .env if needed
    cp .env.test.example .env.test
-   # Use a separate database for testing
-   # Update MONGODB_URI and PORT in .env.test if needed
+   # Update MONGODB_URI and PORT in .env/.env.test if needed
    ```
 
-##Example `.env`:
+   **Example `.env`:**
 
    ```
-   MONGODB_URI=mongodb://localhost:27017/widgets
    PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/widgets
    ```
 
+   **Example `.env.test`:**
+
+   ```
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/test-widgets
+   ```
 
 4. **Configure environment variables for the frontend:**
+
    ```bash
    cd frontend
    cp .env.example .env
    # Update the backend port if changed in backend/.env
-```
+   ```
 
-##Example `.env`:
+   **Example `.env`:**
 
    ```
    PORT=5000
    ```
 
+---
 
 ### Running the App
 
 1. **Start the backend:**
+
    ```bash
    cd backend
    npm run dev
@@ -125,27 +135,27 @@ weather-dashboard/
    npm run dev
    ```
 
-
 Frontend runs at: [http://localhost:3000](http://localhost:3000)  
-Backend runs at: [http://localhost:5000](http://localhost:5050) *(default)*
-
+Backend runs at: [http://localhost:5050](http://localhost:5050) _(default)_
 
 ## 🔍 API Overview
 
-│ Method │ Endpoint         │ Description                               │
-│--------│------------------│-------------------------------------------│
-│ GET    │ `/widgets`       │ Returns all stored widgets                │
-│ POST   │ `/widgets`       │ Creates a new widget (requires location)  │
-│ DELETE │ `/widgets/:id`   │ Deletes a specific widget                 │
-│ GET    │ `/weather/:city` │ Returns weather data (uses cache if fresh)│
+| Method | Endpoint           | Description                               |
+| ------ | ------------------ | ----------------------------------------- |
+| GET    | `/widget`          | Returns all stored widgets                |
+| POST   | `/widget`          | Creates a new widget (requires location)  |
+| DELETE | `/widget/:id`      | Deletes a specific widget                 |
+| GET    | `/geocoding/:city` | Returns city suggestions for autocomplete |
 
+---
 
 ## 🧠 Caching
 
-- Weather data is cached in RAM (backend/services/weatherSevice - cache object)
-- For each city (based on name + coordinates), requests within 5 minutes return cached data
-- After 5 minutes, new API calls to Open-Meteo are made
+- Weather data is cached in RAM (`backend/services/weatherService.js`).
+- For each city (based on name + coordinates), requests within 5 minutes return cached data.
+- After 5 minutes, new API calls to Open-Meteo are made.
 
+---
 
 ## 🧪 Testing
 
@@ -154,34 +164,39 @@ cd backend
 npm test
 ```
 
-**Tests included for:
+**Tests included for:**
 
-- Widget API:
-    Creating a widget (POST /widget) with valid and invalid data
-    Retrieving all widgets (GET /widget), including cases with and without widgets in the database
-    Deleting a widget (DELETE /widget/:id), including non-existent widgets
+- **Widget API:**
 
-- Geocoding API:
-    Fetching city suggestions (GET /geocoding/:city) for valid and invalid city names
-    Handling cases where no cities are found
-    Error handling for invalid requests
+  - Creating a widget (`POST /widget`) with valid and invalid data
+  - Retrieving all widgets (`GET /widget`), including cases with and without widgets in the database
+  - Deleting a widget (`DELETE /widget/:id`), including non-existent widgets
 
-- Weather Service:
-    Fetching weather data for valid and invalid coordinates
-    Handling missing or incorrect parameters
+- **Geocoding API:**
 
+  - Fetching city suggestions (`GET /geocoding/:city`) for valid and invalid city names
+  - Handling cases where no cities are found
+  - Error handling for invalid requests
 
-## Accessibility
+- **Weather Service:**
+  - Fetching weather data for valid and invalid coordinates
+  - Handling missing or incorrect parameters
+
+---
+
+## ♿ Accessibility
 
 - All interactive elements have ARIA labels and are keyboard-accessible.
 - Loading indicators use `aria-live`.
 - Color contrast and focus states are considered.
 
+---
 
 ## 🖼️ Screenshots
 
 ![Weather Dashboard Screenshot](./frontend/public/screenshot.png)
 
+---
 
 ## 👩‍💻 Author
 
