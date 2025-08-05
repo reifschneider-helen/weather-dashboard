@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { debounce } from "lodash";
 import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
@@ -57,11 +57,12 @@ export default function Home() {
     }
   };
 
-  const debouncedFetchCitySuggestions = debounce((query: string) => {
-    fetchCitySuggestions(query);
-  }, 300);
+  const debouncedFetchCitySuggestions = useMemo(
+    () => debounce(fetchCitySuggestions, 1000),
+    []
+  );
 
-  const handleInput = async (query: string): Promise<void> => {
+  const handleInput = (query: string): void => {
     debouncedFetchCitySuggestions(query);
   };
 
@@ -84,7 +85,7 @@ export default function Home() {
       const result = await createWidget(location);
       setWidgets((prev) => [...prev, result]);
       setCitySuggestions([]);
-      setInputValue("")
+      setInputValue("");
     } catch (error) {
       console.error("Failed to create widget: ", error);
     }
@@ -113,8 +114,8 @@ export default function Home() {
           <SearchBar
             value={inputValue}
             setValue={setInputValue}
-            onInput={handleInput}
-            onFocus={fetchCitySuggestions}
+            onInput={debouncedFetchCitySuggestions}
+            onFocus={debouncedFetchCitySuggestions}
             onEnter={handleEnter}
           />
           <CityDropdown
@@ -123,20 +124,18 @@ export default function Home() {
           />
         </div>
         <div className="flex flex-wrap gap-4 justify-center w-full">
-          {widgets.map(
-            (
-              widget: WidgetInterface //add spiner
-            ) => (
-              <WeatherWidget
-                key={widget.id}
-                widget={widget}
-                onDelete={handleDelete}
-              />
-            )
-          )}
+          {widgets.map((widget: WidgetInterface) => (
+            <WeatherWidget
+              key={widget.id}
+              widget={widget}
+              onDelete={handleDelete}
+            />
+          ))}
         </div>
       </main>
-      <footer></footer>
+      <footer className="text-gray-800 dark:text-gray-400">
+        © Elena Reifschneider 2025
+      </footer>
     </div>
   );
 }

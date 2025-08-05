@@ -12,15 +12,11 @@ export default function WeatherWidget(props: {
 }) {
   const { widget, onDelete } = props;
   return (
-    <div className="bg-gradient-to-br from-blue-500 to-sky-700 text-white relative p-6 rounded-lg shadow-md w-fit">
+    <div className="bg-gradient-to-br from-blue-500 to-sky-700 text-white dark:from-gray-900 dark:via-blue-900 dark:to-gray-800 dark:text-gray-100  relative p-6 rounded-lg shadow-md w-fit">
       <div className="flex items-center mr-6">
         <div className="flex items-center">
-          <LocationIcon
-            aria-hidden="true"
-            alt="Ort:"
-            className="size-6 mr-2 self-start"
-          />
-          <div
+          <LocationIcon aria-hidden="true" className="size-6 mr-2 self-start" />
+          <span
             className="mr-4 text-xl"
             aria-label={`Ort: ${widget.location.name}${
               widget.location.region ? `, ${widget.location.region}` : ""
@@ -31,58 +27,58 @@ export default function WeatherWidget(props: {
               {widget.location.region && <p>{widget.location.region}</p>}
               <p>{widget.location.country}</p>
             </div>
-          </div>
+          </span>
         </div>
       </div>
       <div className="flex gap-5 ml-8 mt-6">
-        <span className="sr-only">Temperatur: </span>
-        <p className="text-7xl">{widget.weather.temperature}°</p>
+        <p
+          className="text-7xl"
+          aria-label={`Temperatur: ${widget.weather.temperature} Grad Celsius`}
+        >
+          {widget.weather.temperature}°
+        </p>
         <div>
-          <p className="flex items-center gap-0.5">
-            <HumidityIcon
-              aria-hidden="true"
-              aria-label="Feuchtigkeit: "
-              className="size-4"
-            />
-            {widget.weather.humidity}%
-          </p>
           {!!widget.weather.rain && (
-            <p className="flex items-center gap-0.5">
-              <RainIcon
-                aria-hidden="true"
-                aria-label="Regen: "
-                className="size-4"
-              />{" "}
+            <p
+              className="flex items-center gap-0.5"
+              aria-label={`Regen: ${widget.weather.rain} Millimeter`}
+            >
+              <RainIcon aria-hidden="true" className="size-4" />
               {widget.weather.rain} mm
             </p>
           )}
           {!!widget.weather.snowfall && (
-            <p className="flex items-center gap-0.5">
-              <SnowIcon
-                aria-hidden="true"
-                aria-label="Schnee: "
-                className="size-4"
-              />
+            <p
+              className="flex items-center gap-0.5"
+              aria-label={`Schnee: ${widget.weather.snowfall} Millimeter`}
+            >
+              <SnowIcon aria-hidden="true" className="size-4" />
               {widget.weather.snowfall} mm
             </p>
           )}
-          <p className="flex items-center gap-0.5">
-            <WindIcon
-              aria-hidden="true"
-              aria-label="Windgeschwindigkeit: "
-              className="size-4"
-            />
+          <p
+            className="flex items-center gap-0.5"
+            aria-label={`Windgeschwindigkeit: ${widget.weather.windSpeed} Kilometer pro Stunde`}
+          >
+            <WindIcon aria-hidden="true" className="size-4" />
             {widget.weather.windSpeed} km/h
+          </p>
+          <p
+            className="flex items-center gap-0.5"
+            aria-label={`Feuchtigkeit: ${widget.weather.humidity} Prozent`}
+          >
+            <HumidityIcon aria-hidden="true" className="size-4" />
+            {widget.weather.humidity}%
           </p>
         </div>
       </div>
 
       <button
         className="absolute top-4 right-3 hover:bg-blue-200/20 p-2 rounded-full cursor-pointer"
-        aria-label="Widget löschen"
+        aria-label={`Widget für ${widget.location.name} löschen`}
         onClick={() => onDelete(widget.id)}
       >
-        <CloseIcon aria-hidden="true" alt="X" className="size-6" />
+        <CloseIcon aria-hidden="true" className="size-6" />
       </button>
     </div>
   );

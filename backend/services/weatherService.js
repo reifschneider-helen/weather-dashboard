@@ -1,3 +1,7 @@
+const cache = {};
+const FIVE_MINUTES = 5 * 60 * 1000;
+const ONE_MINUTE = 60 * 1000; //to delete
+
 async function fetchWeatherForecast({ name, latitude, longitude }) {
   if (
     !name ||
@@ -10,6 +14,11 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
   }
 
   try {
+    const key = `${latitude},${longitude}`;
+    if (cache[key] && Date.now() - cache[key].timestamp < FIVE_MINUTES) {
+      return cache[key].data;
+    }
+
     const weatherRes = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain,snowfall`
     );
@@ -28,6 +37,11 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
       windSpeed: weatherData.current.wind_speed_10m,
       rain: weatherData.current.rain,
       snowfall: weatherData.current.snowfall,
+    };
+
+    cache[key] = {
+      data: formattedWeatherData,
+      timestamp: Date.now(),
     };
 
     return formattedWeatherData;
