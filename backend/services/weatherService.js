@@ -1,6 +1,6 @@
 const cache = {};
-const FIVE_MINUTES = 5 * 60 * 1000;
-const ONE_MINUTE = 60 * 1000; //to delete
+// const FIVE_MINUTES = 5 * 60 * 1000;
+const FIVE_MINUTES = 60 * 1000; //to delete
 
 async function fetchWeatherForecast({ name, latitude, longitude }) {
   if (
@@ -16,6 +16,7 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
   try {
     const key = `${latitude},${longitude}`;
     if (cache[key] && Date.now() - cache[key].timestamp < FIVE_MINUTES) {
+      console.log("cache");
       return cache[key].data;
     }
 
@@ -43,7 +44,7 @@ async function fetchWeatherForecast({ name, latitude, longitude }) {
       data: formattedWeatherData,
       timestamp: Date.now(),
     };
-
+    console.log("new data");
     return formattedWeatherData;
   } catch (error) {
     console.error("Error fetching weather data:", error);

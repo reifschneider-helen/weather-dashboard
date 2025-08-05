@@ -6,6 +6,7 @@ import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
 import SearchBar from "@/components/SearchBar";
 import CityDropdown from "@/components/CityDropdown";
+import UpdateWidgetsButton from "@/components/UpdateWidgetsButton";
 import { getWidgets, createWidget, deleteWidget } from "@/services/widgetApi";
 import { getCitySuggestions } from "@/services/geocodingApi";
 import WidgetInterface from "@/models/widget.model";
@@ -17,6 +18,7 @@ export default function Home() {
     []
   );
   const [inputValue, setInputValue] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
@@ -33,6 +35,14 @@ export default function Home() {
     ) {
       setCitySuggestions([]);
     }
+  };
+
+  const handleRefreshAll = async () => {
+    console.log("button clicked");
+    setIsRefreshing(true);
+    await fetchData();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsRefreshing(false);
   };
 
   const fetchData = async () => {
@@ -78,12 +88,35 @@ export default function Home() {
     }
   };
 
+  const updateOrAddWidget = (
+    prev: WidgetInterface[],
+    newWidget: WidgetInterface
+  ) => {
+    const index = prev.findIndex(
+      (widget) =>
+        widget.location.name === newWidget.location.name &&
+        widget.location.latitude === newWidget.location.latitude &&
+        widget.location.longitude === newWidget.location.longitude
+    );
+    if (index !== -1) {
+      console.log("existiert schon");
+      const updated = [...prev];
+      updated[index] = newWidget;
+      return updated;
+    } else {
+      console.log("new");
+      return [...prev, newWidget];
+    }
+  };
+
   const handleSelectCity = async (
     location: GeodataInterface
   ): Promise<void> => {
     try {
       const result = await createWidget(location);
-      setWidgets((prev) => [...prev, result]);
+
+      setWidgets((prev) => updateOrAddWidget(prev, result));
+
       setCitySuggestions([]);
       setInputValue("");
     } catch (error) {
@@ -123,6 +156,10 @@ export default function Home() {
             onSelect={handleSelectCity}
           />
         </div>
+        <UpdateWidgetsButton
+          onClick={handleRefreshAll}
+          loading={isRefreshing}
+        />
         <div className="flex flex-wrap gap-4 justify-center w-full">
           {widgets.map((widget: WidgetInterface) => (
             <WeatherWidget
