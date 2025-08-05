@@ -194,7 +194,7 @@ npm test
 
 ## 🖼️ Screenshots
 
-![Weather Dashboard Screenshot](./frontend/public/screenshot.png)
+![Weather Dashboard Screenshot](./frontend/public/app-screenshot.png)
 
 ---
 
