@@ -38,7 +38,7 @@ export default function Home() {
   const debouncedFetchCitySuggestions = useRef(
     debounce((query: string) => {
       fetchCitySuggestions(query);
-    }, 1000)
+    }, 600)
   );
 
   const mergeWidgetsPreserveOrder = (prev: Widget[], updated: Widget[]) => {
