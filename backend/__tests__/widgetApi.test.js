@@ -23,6 +23,24 @@ afterAll(async () => {
 });
 
 describe("Widget API", () => {
+  describe("GET /widget", () => {
+    it("should get all widgets with weather", async () => {
+      const res = await request(app).get("/widget");
+      expect(res.statusCode).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+      if (res.body.length > 0) {
+        expect(res.body[0]).toHaveProperty("location");
+        expect(res.body[0]).toHaveProperty("weather");
+      }
+    });
+
+    it("should return an empty array if no widgets exist", async () => {
+      const res = await request(app).get("/widget");
+      expect(res.statusCode).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+    });
+  });
+
   describe("POST /widget", () => {
     it("should create a new widget and return data with weather", async () => {
       const res = await request(app)
@@ -68,24 +86,6 @@ describe("Widget API", () => {
         .send({ location: invalidLocation });
       expect(res.statusCode).toBe(400);
       expect(res.body).toHaveProperty("error");
-    });
-  });
-
-  describe("GET /widget", () => {
-    it("should get all widgets with weather", async () => {
-      const res = await request(app).get("/widget");
-      expect(res.statusCode).toBe(200);
-      expect(Array.isArray(res.body)).toBe(true);
-      if (res.body.length > 0) {
-        expect(res.body[0]).toHaveProperty("location");
-        expect(res.body[0]).toHaveProperty("weather");
-      }
-    });
-
-    it("should return an empty array if no widgets exist", async () => {
-      const res = await request(app).get("/widget");
-      expect(res.statusCode).toBe(200);
-      expect(Array.isArray(res.body)).toBe(true);
     });
   });
 
