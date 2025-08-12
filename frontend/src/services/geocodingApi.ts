@@ -1,7 +1,7 @@
-const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getCitySuggestions(city: string) {
-  const response = await fetch(`http://localhost:${apiPort}/geocoding/${city}`);
+  const response = await fetch(`${apiUrl}/geocoding/${city}`);
   if (!response.ok) {
     throw new Error("Failed to get geodata");
   }

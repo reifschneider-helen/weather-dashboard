@@ -115,7 +115,7 @@ weather-dashboard/
    **Example `.env`:**
 
    ```
-   NEXT_PUBLIC_API_PORT=5050
+   NEXT_PUBLIC_API_URL=http://localhost:5050
    ```
 
 ---

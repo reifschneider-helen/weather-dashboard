@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
 import SearchBar from "@/components/SearchBar";

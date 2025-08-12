@@ -1,10 +1,10 @@
 import Location from "@/models/location.model";
 import Widget from "@/models/widget.model";
 
-const apiPort = process.env.NEXT_PUBLIC_API_PORT || 5000;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getWidgets(): Promise<Widget[]> {
-  const response = await fetch(`http://localhost:${apiPort}/widget`);
+  const response = await fetch(`${apiUrl}/widget`);
   if (!response.ok) {
     throw new Error("Failed to get widgets");
   }
@@ -12,7 +12,7 @@ export async function getWidgets(): Promise<Widget[]> {
 }
 
 export async function createWidget(location: Location) {
-  const response = await fetch(`http://localhost:${apiPort}/widget`, {
+  const response = await fetch(`${apiUrl}/widget`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ location }),
@@ -25,7 +25,7 @@ export async function createWidget(location: Location) {
 }
 
 export async function deleteWidget(id: string) {
-  const response = await fetch(`http://localhost:${apiPort}/widget/${id}`, {
+  const response = await fetch(`${apiUrl}/widget/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
