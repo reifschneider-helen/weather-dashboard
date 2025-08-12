@@ -53,6 +53,13 @@ weather-dashboard/
 ```
 
 ---
+## 🌐 Live Demo
+
+- **Frontend:** [https://weather-dashboard-pearl-one.vercel.app](https://weather-dashboard-pearl-one.vercel.app)
+- **Backend API:** [https://weather-dashboard-backend-1o3e.onrender.com](https://weather-dashboard-backend-1o3e.onrender.com)
+> The backend is an API service. You won’t see a user interface there, but it powers the frontend and responds to requests like `/widget` and `/geocoding/:city`.
+
+---
 
 ## ⚙️ Getting Started
 
