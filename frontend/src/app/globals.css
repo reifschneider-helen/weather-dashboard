@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@theme {
+  --breakpoint-xs: 24rem;
+  --breakpoint-2xs: 22rem;
+  --breakpoint-3xs: 21rem;
+}

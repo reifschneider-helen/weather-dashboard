@@ -112,7 +112,7 @@ export default function Home() {
     try {
       const result = await createWidget(location);
 
-      setWidgets((prev) => [...prev, result]);
+      setWidgets((prev) => [result, ...prev]);
       setCitySuggestions([]);
       setInputValue("");
     } catch (error) {
@@ -130,35 +130,35 @@ export default function Home() {
   };
 
   return (
-    <div className="font-sans flex flex-col items-center gap-8 h-full min-h-screen">
+    <div className="font-sans flex flex-col items-center gap-8 h-full min-h-screen p-6">
       <header className="mt-4">
         <Heading title="Wetter Dashboard" />
       </header>
-      <main className="flex flex-col flex-1 gap-[32px] row-start-2 items-center">
+      <main className="flex flex-col flex-1 gap-8 row-start-2 items-center w-full">
         <div
           ref={searchContainerRef}
           onKeyDown={(e) => handleEscape(e)}
-          className="relative w-full max-w-xs sm:max-w-[400px] mx-auto px-2"
+          className="flex justify-center w-full"
         >
-          <div className="relative">
-            <SearchBar
-              value={inputValue}
-              setValue={setInputValue}
-              onInput={handleInput}
-              onFocus={handleInput}
-              onEnter={handleEnter}
-            />
-            <CityDropdown
-              suggestions={citySuggestions}
-              widgets={widgets}
-              onSelect={handleSelectCity}
-            />
-            <div className="absolute right-[-48px] top-1">
-              <UpdateWidgetsButton
-                onClick={handleRefreshAll}
-                loading={isRefreshing}
+          <div className="flex gap-4 items-center justify-center w-96 max-2xs:w-full">
+            <div className="relative flex-1">
+              <SearchBar
+                value={inputValue}
+                setValue={setInputValue}
+                onInput={handleInput}
+                onFocus={handleInput}
+                onEnter={handleEnter}
+              />
+              <CityDropdown
+                suggestions={citySuggestions}
+                widgets={widgets}
+                onSelect={handleSelectCity}
               />
             </div>
+            <UpdateWidgetsButton
+              onClick={handleRefreshAll}
+              loading={isRefreshing}
+            />
           </div>
         </div>
         <div className="flex flex-wrap gap-4 justify-center w-full">

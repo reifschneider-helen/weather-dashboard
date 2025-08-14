@@ -32,7 +32,7 @@ export default function CityDropdown(props: {
               ref={idx === 0 ? firstBtnRef : null}
               tabIndex={0}
               role="option"
-              className={`w-full text-left p-2 rounded-lg text-black dark:text-gray-100
+              className={`text-left p-2 rounded-lg text-black dark:text-gray-100
                  ${
                    exists
                      ? "opacity-50 cursor-not-allowed"
