@@ -163,7 +163,10 @@ export default function Home() {
         </div>
         <div className="flex flex-wrap gap-4 justify-center w-full">
           {isLoading ? (
-            <div className="text-gray-500 text-lg mt-8" aria-live="polite">
+            <div
+              className="text-gray-600 dark:text-gray-400 text-lg mt-8"
+              aria-live="polite"
+            >
               Wird geladen...
             </div>
           ) : (
