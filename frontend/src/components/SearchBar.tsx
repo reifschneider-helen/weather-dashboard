@@ -1,16 +1,20 @@
-"use client";
-
 import { SetStateAction } from "react";
 
-export default function SearchBar(props: {
+type Props = {
   value: string;
   setValue: (value: SetStateAction<string>) => void;
   onInput: (query: string) => void;
   onFocus: (query: string) => void;
   onEnter: () => void;
-}) {
-  const { value, setValue, onInput, onFocus, onEnter } = props;
+};
 
+export default function SearchBar({
+  value,
+  setValue,
+  onInput,
+  onFocus,
+  onEnter,
+}: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     onInput(e.target.value);

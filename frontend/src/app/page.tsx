@@ -2,11 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import debounce from "lodash/debounce";
-import WeatherWidget from "@/components/WeatherWidget";
 import Heading from "@/components/Heading";
-import SearchBar from "@/components/SearchBar";
-import CityDropdown from "@/components/CityDropdown";
-import UpdateWidgetsButton from "@/components/UpdateWidgetsButton";
+import CitySearch from "@/components/CitySearch";
+import Dashboard from "@/components/Dashboard";
 import { getWidgets, createWidget, deleteWidget } from "@/services/widgetApi";
 import { getCitySuggestions } from "@/services/geocodingApi";
 import Widget from "@/models/widget.model";
@@ -135,50 +133,25 @@ export default function Home() {
         <Heading title="Wetter Dashboard" />
       </header>
       <main className="flex flex-col flex-1 gap-8 row-start-2 items-center w-full">
-        <div
-          ref={searchContainerRef}
-          onKeyDown={(e) => handleEscape(e)}
-          className="flex justify-center w-full"
-        >
-          <div className="flex gap-4 items-center justify-center w-96 max-2xs:w-full">
-            <div className="relative flex-1">
-              <SearchBar
-                value={inputValue}
-                setValue={setInputValue}
-                onInput={handleInput}
-                onFocus={handleInput}
-                onEnter={handleEnter}
-              />
-              <CityDropdown
-                suggestions={citySuggestions}
-                widgets={widgets}
-                onSelect={handleSelectCity}
-              />
-            </div>
-            <UpdateWidgetsButton
-              onClick={handleRefreshAll}
-              loading={isRefreshing}
-            />
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-4 justify-center w-full">
-          {isLoading ? (
-            <div
-              className="text-gray-600 dark:text-gray-400 text-lg mt-8"
-              aria-live="polite"
-            >
-              Wird geladen...
-            </div>
-          ) : (
-            widgets.map((widget: Widget) => (
-              <WeatherWidget
-                key={widget.id}
-                widget={widget}
-                onDelete={handleDelete}
-              />
-            ))
-          )}
-        </div>
+        <CitySearch
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          citySuggestions={citySuggestions}
+          widgets={widgets}
+          onInput={handleInput}
+          onFocus={handleInput}
+          onEnter={handleEnter}
+          onSelect={handleSelectCity}
+          searchContainerRef={searchContainerRef}
+          handleEscape={handleEscape}
+          isRefreshing={isRefreshing}
+          handleRefreshAll={handleRefreshAll}
+        />
+        <Dashboard
+          widgets={widgets}
+          isLoading={isLoading}
+          onDelete={handleDelete}
+        />
       </main>
       <footer className="text-gray-800 dark:text-gray-400">
         © Elena Reifschneider 2025

@@ -1,10 +1,11 @@
 import RefreshIcon from "@/icons/refresh.svg";
 
-export default function UpdateWidgetsButton(props: {
+type Props = {
   loading: boolean;
   onClick: () => void;
-}) {
-  const { loading, onClick } = props;
+};
+
+export default function UpdateWidgetsButton({ loading, onClick }: Props) {
   return (
     <button
       type="button"

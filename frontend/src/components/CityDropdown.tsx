@@ -11,12 +11,17 @@ const alreadyExists = (city: Geodata, widgets: Widget[]) => {
   );
 };
 
-export default function CityDropdown(props: {
+type Props = {
   suggestions: Geodata[];
   widgets: Widget[];
   onSelect: (city: Geodata) => void;
-}) {
-  const { suggestions, widgets, onSelect } = props;
+};
+
+export default function CityDropdown({
+  suggestions,
+  widgets,
+  onSelect,
+}: Props) {
   const firstBtnRef = useRef<HTMLButtonElement>(null);
 
   if (suggestions.length === 0) return null;

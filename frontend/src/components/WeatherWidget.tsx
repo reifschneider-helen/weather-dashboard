@@ -6,11 +6,12 @@ import WindIcon from "@/icons/wind.svg";
 import HumidityIcon from "@/icons/humidity.svg";
 import Widget from "@/models/widget.model";
 
-export default function WeatherWidget(props: {
+type Props = {
   widget: Widget;
   onDelete: (id: string) => void;
-}) {
-  const { widget, onDelete } = props;
+};
+
+export default function WeatherWidget({ widget, onDelete }: Props) {
   return (
     <div className="bg-gradient-to-br from-blue-500 to-sky-700 text-white dark:from-gray-900 dark:via-blue-900 dark:to-gray-800 dark:text-gray-100  relative p-6 max-2xs:p-4 rounded-lg shadow-md min-w-77 min-h-50 max-2xs:w-full max-2xs:min-w-0">
       <div className="flex flex-col justify-between h-full max-2xs:justify-around">
