@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'  https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src * data:; connect-src *; font-src *;",
+              "default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data:; connect-src *; font-src *;",
           },
           {
             key: "X-Frame-Options",
